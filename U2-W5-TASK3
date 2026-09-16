@@ -1,0 +1,54 @@
+import java.io.*;
+import java.util.*;
+import java.util.stream.*;
+
+public class Solution {
+
+    public static List<Integer> maxSubarray(List<Integer> arr) {
+        // 1. Maximum Subarray Sum using Kadane's Algorithm
+        int maxSubarraySum = arr.get(0);
+        int currentSubarraySum = arr.get(0);
+
+        for (int i = 1; i < arr.size(); i++) {
+            currentSubarraySum = Math.max(arr.get(i), currentSubarraySum + arr.get(i));
+            maxSubarraySum = Math.max(maxSubarraySum, currentSubarraySum);
+        }
+
+        // 2. Maximum Subsequence Sum using Greedy Approach
+        int maxSubsequenceSum = 0;
+        int maxElement = Integer.MIN_VALUE;
+
+        for (int num : arr) {
+            if (num > 0) {
+                maxSubsequenceSum += num;
+            }
+            maxElement = Math.max(maxElement, num);
+        }
+
+        // If all elements are non-positive, pick the largest single element
+        if (maxSubsequenceSum == 0 && maxElement <= 0) {
+            maxSubsequenceSum = maxElement;
+        }
+
+        return Arrays.asList(maxSubarraySum, maxSubsequenceSum);
+    }
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(bufferedReader.readLine().trim());
+
+        for (int tItr = 0; tItr < t; tItr++) {
+            int n = Integer.parseInt(bufferedReader.readLine().trim());
+
+            List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
+
+            List<Integer> result = maxSubarray(arr);
+
+            System.out.println(result.get(0) + " " + result.get(1));
+        }
+
+        bufferedReader.close();
+    }
+}
