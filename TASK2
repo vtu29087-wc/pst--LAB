@@ -1,0 +1,57 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        HashMap<String, ArrayList<Double>> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            String id = sc.next();
+            double temp = sc.nextDouble();
+
+            if (temp > 50) {
+                map.putIfAbsent(id, new ArrayList<>());
+                map.get(id).add(temp);
+            }
+        }
+
+        ArrayList<String> sensors = new ArrayList<>(map.keySet());
+
+        sensors.sort((a, b) -> {
+            double avgA = average(map.get(a));
+            double avgB = average(map.get(b));
+            return Double.compare(avgB, avgA);
+        });
+
+        for (String id : sensors) {
+            System.out.println(id + " " + average(map.get(id)));
+        }
+    }
+
+    static double average(ArrayList<Double> list) {
+        double sum = 0;
+
+        for (double x : list) {
+            sum += x;
+        }
+
+        return sum / list.size();
+    }
+}
+
+Sample input:
+6
+s1 60
+s2 40
+s3 80
+s4 70
+s5 90
+s6 30
+
+Sample output:
+s3 80.0
+s4 70.0
+s1 60.0
