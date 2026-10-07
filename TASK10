@@ -1,0 +1,51 @@
+import java.util.*;
+
+public class Testing {
+
+    static boolean login(String username, String password) {
+
+        if (username.length() < 3 || username.length() > 20) {
+            return false;
+        }
+
+        return username.equals("admin") && password.equals("admin123");
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            int n = sc.nextInt();
+
+            for (int i = 0; i < n; i++) {
+
+                String username = sc.next();
+                String password = sc.next();
+
+                if (login(username, password)) {
+                    System.out.println("Success");
+                } else {
+                    System.out.println("Failure");
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println("Failure");
+        }
+
+        sc.close();
+    }
+}
+
+
+SAMPLE INPUT:
+3   
+admin admin123
+ab 123
+user pass
+
+SAMPLE OUTPUT:
+Success
+Failure
+Failure
