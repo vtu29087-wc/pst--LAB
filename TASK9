@@ -1,0 +1,47 @@
+import java.util.*;
+
+public class Calculator {
+
+    static int add(int a, int b) {
+        return a + b;
+    }
+
+    static int divide(int a, int b) {
+        return a / b;
+    }
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        String input = sc.nextLine();
+        String[] parts = input.trim().split("\\s+");
+
+        int a = Integer.parseInt(parts[0]);
+        String operator = parts[1];
+        int b = Integer.parseInt(parts[2]);
+
+        boolean passed = false;
+
+        if (operator.equals("+")) {
+            passed = (add(a, b) == a + b);
+        } else if (operator.equals("/") && b != 0) {
+            passed = (divide(a, b) == a / b);
+        }
+
+        if (passed) {
+            System.out.println("Test Passed");
+        } else {
+            System.out.println("Test Failed");
+        }
+
+        sc.close();
+    }
+}
+
+Sample Input
+10 + 20
+10/20
+Sample Output
+Test Passed
+Test passed
