@@ -1,0 +1,67 @@
+
+import java.util.*;
+
+class UndergroundSystem {
+
+    class CheckInInfo {
+        String station;
+        int time;
+
+        CheckInInfo(String station, int time) {
+            this.station = station;
+            this.time = time;
+        }
+    }
+
+    class TripInfo {
+        int totalTime;
+        int count;
+
+        TripInfo() {
+            totalTime = 0;
+            count = 0;
+        }
+    }
+
+    private Map<Integer, CheckInInfo> checkIns;
+    private Map<String, TripInfo> trips;
+
+    public UndergroundSystem() {
+        checkIns = new HashMap<>();
+        trips = new HashMap<>();
+    }
+
+    public void checkIn(int id, String stationName, int t) {
+        checkIns.put(id, new CheckInInfo(stationName, t));
+    }
+
+    public void checkOut(int id, String stationName, int t) {
+        CheckInInfo info = checkIns.get(id);
+
+        int duration = t - info.time;
+        String route = info.station + "->" + stationName;
+
+        trips.putIfAbsent(route, new TripInfo());
+
+        TripInfo trip = trips.get(route);
+        trip.totalTime += duration;
+        trip.count++;
+
+        checkIns.remove(id);
+    }
+
+    public double getAverageTime(String startStation, String endStation) {
+        String route = startStation + "->" + endStation;
+        TripInfo trip = trips.get(route);
+
+        return (double) trip.totalTime / trip.count;
+    }
+}
+
+Input
+["UndergroundSystem","checkIn","checkIn","checkIn","checkOut","checkOut","checkOut","getAverageTime","getAverageTime","checkIn","getAverageTime","checkOut","getAverageTime"]
+[[],[45,"Leyton",3],[32,"Paradise",8],[27,"Leyton",10],[45,"Waterloo",15],[27,"Waterloo",20],[32,"Cambridge",22],["Paradise","Cambridge"],["Leyton","Waterloo"],[10,"Leyton",24],["Leyton","Waterloo"],[10,"Waterloo",38],["Leyton","Waterloo"]]
+Output
+[null,null,null,null,null,null,null,14.00000,11.00000,null,11.00000,null,12.00000]
+Expected
+[null,null,null,null,null,null,null,14.00000,11.00000,null,11.00000,null,12.00000]
